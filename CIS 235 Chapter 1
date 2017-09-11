@@ -1,0 +1,54 @@
+//index.html
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>repl.it</title>
+    <link href="index.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <canvas width = "320" height = "480" id = "game"></canvas>
+    <script src="index.js"></script>
+  </body>
+</html>
+//index.js 
+console.log("Welcome to the Wonderful World of JavaScript!");
+let x = 7; 
+let y = x + 5;
+let name = "Jane Doe";
+const PI = 3.141592653589793;
+
+let double = x => 2*x;
+console.log(double(10));
+
+let square = x => x*x; 
+console.log(square(4));
+
+const a = 9.8;
+//let distance = t => (1/2)*(a*square(t));
+//console.log(distance(2.4));
+
+let msToSec = (milliseconds) => Math.trunc(milliseconds/1000);
+console.log(msToSec(5247));
+
+let distance = (v, t) => v/t;
+console.log(distance(20, 5));
+
+let daysAfterSunday = days => days % 7;
+console.log(daysAfterSunday(14));
+
+let canvasElement = document.getElementById("game");
+let gameContext = canvasElement.getContext("2d");
+gameContext.fillStyle = "red";
+gameContext.fillRect(5, 10, 50, 20);
+
+let render = milliseconds => {  
+  console.log(milliseconds);  
+  requestAnimationFrame(render);
+};
+requestAnimationFrame(render);
+//index.css
+#game {
+  background-color: cyan;
+  border: 2px dashed white;
+}
