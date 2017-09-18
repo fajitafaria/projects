@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Starbuzz Coffee React!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.14.0/babel.min.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.min.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react-dom.min.js"></script>
+
+    <style type="text/css">
+        body { 
+                background-color: #d2b48c; 
+                margin-left: 20%; 
+                margin-right: 20%; 
+                border: 2px dotted black; 
+                padding: 10px 10px 10px 10px; 
+                font-family: sans-serif; 
+        }
+    </style>
+  </head>
+  <body>
+    <h1>Starbuzz Coffee React!</h1>
+    <div id = "example"></div><BR><BR>
+    <script type = "text/babel">
+      var MenuItem = React.createClass({
+          render: function() {
+            return <div><h3>{this.props.product}, {this.props.price}</h3>
+                            <p>{this.props.children}</p></div>;
+          }
+      });
+
+      var Menu = React.createClass({
+          render: function() {
+            return ( 
+             <div>
+               <MenuItem product = "House Blend" price = "$1.49">A smooth, mild blend of coffees from Mexico, Bolivia and Guatemala.</MenuItem>
+               <MenuItem product = "Mocha Cafe Latte" price = "$2.35">Espresso, steamed milk and chocolate syrup.</MenuItem>
+               <MenuItem product = "Cappuccino" price = "$1.89">A mixture of espresso, steamed milk and foam.</MenuItem>
+               <MenuItem product = "Chai Tea" price = "$1.85">A spicy drink made with black tea, spices, milk and honey.</MenuItem>
+             </div>
+            );
+          }
+      });
+
+      var mountNode = document.getElementById('example');
+      ReactDOM.render(<Menu />, mountNode);
+    </script>
+  </body>
+</html>
