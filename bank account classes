@@ -1,0 +1,61 @@
+/**
+ * A bank account has a balance that can be changed by deposits and withdrawals. 
+ */
+class BankAccount
+{
+	
+    /**
+     * Creates a bank account with the given balance. 
+     * @param {number} amount the starting amount. 
+     */
+
+    constructor(amount)
+    {
+       this.myBalance = amount;
+       // TODO: implement constructor
+    }
+
+    /**
+     * @type {number}
+     */
+
+    get balance()
+    {
+      return this.myBalance;
+       
+    }
+    
+    set balance(value)
+    {  
+      this.myBalance = value
+    }
+    /**
+     * Deposits money into the bank account. 
+     * @param {number} amount the amount to deposit 
+     */
+
+    deposit(amount)
+    {
+      this.myBalance = this.myBalance + amount;
+  
+    }
+
+    /**
+     * Withdraws money from the bank account. 
+     * @param amount the amount to withdraw 
+     */
+    withdraw(amount)
+    {
+      this.myBalance = this.myBalance - amount;
+    }    
+}
+
+let b = new BankAccount(300);
+b.withdraw(100);
+console.log(b.balance);
+b.deposit(50);
+console.log(b.balance);
+
+
+
+
