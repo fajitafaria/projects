@@ -1,0 +1,50 @@
+/** Class representing a point with 2 coordinates. */
+class Point {
+    
+    /**
+     * Create a point.
+     * @param {number} x - The x value.
+     * @param {number} y - The y value.
+     */
+    constructor(x, y) {  
+      this.myX = x;
+      this.myY = y;
+    }
+    
+    get x() {
+      return this.myX;
+    }
+    
+    set x(value) {
+      //this.myX = value;
+      throw new Error("Points are immutable.");
+    }
+    
+    get y() {
+      return this.myY;
+    }
+    
+    set y(value) {
+      //this.myY = value;
+      throw new Error("Points are immutable.");
+    }
+    
+    /**
+     * Returns the distance between itself and another point
+     * @param {Point} p the point to find the distance between
+     * @return {number} distance between itself and p
+     */
+    distance(p) {
+       return Math.sqrt((p.x - this.myX)**2 + (p.y - this.myY)**2);
+    }
+}
+let p1 = new Point(1, 2);
+let p2 = new Point(3, 4);
+console.log(p1.distance(p2));
+console.log(p2.distance(p1));
+p2.x = 100;
+p2.y = 50;
+console.log(p2);
+p1.x = 10;
+p1.y = 20;
+console.log(p1);  
