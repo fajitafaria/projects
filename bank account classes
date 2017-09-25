@@ -11,8 +11,7 @@ class BankAccount
 
     constructor(amount)
     {
-       this.myBalance = amount;
-       // TODO: implement constructor
+        this.myBalance = amount;
     }
 
     /**
@@ -21,14 +20,10 @@ class BankAccount
 
     get balance()
     {
-      return this.myBalance;
-       
+       // TODO: implement getter for balance
+       return this.myBalance;
     }
-    
-    set balance(value)
-    {  
-      this.myBalance = value
-    }
+
     /**
      * Deposits money into the bank account. 
      * @param {number} amount the amount to deposit 
@@ -36,8 +31,8 @@ class BankAccount
 
     deposit(amount)
     {
-      this.myBalance = this.myBalance + amount;
-  
+        // TODO: implement deposit method
+        this.myBalance = this.myBalance + amount;
     }
 
     /**
@@ -46,16 +41,32 @@ class BankAccount
      */
     withdraw(amount)
     {
-      this.myBalance = this.myBalance - amount;
-    }    
+        // TODO: implement withdraw method
+        this.myBalance = this.myBalance - amount;
+    }
+    
+    /**
+     * Transfers amount from BankAccount b to my account
+     * @param amount the amount to withdraw 
+     * @param b the bank account to transfer money from
+     */
+    
+    transfer(amount, b)
+    {
+      this.deposit(amount); 
+      b.withdraw(amount);
+      
+    }
 }
-
-let b = new BankAccount(300);
-b.withdraw(100);
-console.log(b.balance);
-b.deposit(50);
-console.log(b.balance);
-
-
+janeSavingsAccount = new BankAccount(500);
+bobSavingsAccount = new BankAccount(400);
+console.log("Starting Balance:", janeSavingsAccount.balance);
+janeSavingsAccount.deposit(200);
+console.log("Balance after $200 deposit:", janeSavingsAccount.balance);
+//janeSavingsAccount.deposit(bobSavingsAccount.balance);
+//bobSavingsAccount.withdraw(bobSavingsAccount.balance);
+janeSavingsAccount.transfer(bobSavingsAccount.balance, bobSavingsAccount);
+console.log("Jane's Balance after robbing Bob:", janeSavingsAccount.balance);
+console.log("Bob's Balance after being robbed:", bobSavingsAccount.balance);
 
 
