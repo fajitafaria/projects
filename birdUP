@@ -1,0 +1,100 @@
+class Point {
+    
+    /**
+     * Create a point.
+     * @param {number} x - The x value.
+     * @param {number} y - The y value.
+     */
+    constructor(x, y) {  
+      this.myX = x;
+      this.myY = y;
+    }
+    
+    get x() {
+      return this.myX;
+    }
+    
+    set x(value) {
+      //this.myX = value;
+      throw new Error("Points are immutable.");
+    }
+    
+    get y() {
+      return this.myY;
+    }
+    
+    set y(value) {
+      //this.myY = value;
+      throw new Error("Points are immutable.");
+    }
+    
+    /**
+     * Returns the distance between itself and another point
+     * @param {Point} p the point to find the distance between
+     * @return {number} distance between itself and p
+     */
+    distance(p) {
+       return Math.sqrt((p.x - this.myX)**2 + (p.y - this.myY)**2);
+    }
+}
+
+
+/**
+ * A Bird class maintains the position of a bird over time
+ */
+
+class Bird {
+  
+  /**
+   * Create a new Bird.
+   * @param {Point} startPosition - The 2D starting position of the Bird (x, y)
+   * @param {number} startXSpeed - The starting horizontal speed of the bird (pixels/second)
+   * @param {number} gravity - The change in the y velocity due to gravity (pixels/second)
+   * @param {number} flapUpSpeed - The y velocity (opposite direction of gravity) caused by a flap
+   */
+  
+  constructor(startPosition, startXSpeed, gravity, flapUpSpeed, b) {
+  
+    this.myPosition = (x,y);
+    this.myStartSpeed = x*0;
+  
+    document.getElementById("game").addEventListener("click", m.flap);
+  }
+  
+  /**
+   * Updates the position of the bird (both x and y coordinates)
+   * @param {number} secondsElapsed - the number of seconds that passed since the last move
+   */
+  
+  move(secondsElapsed) {
+    
+  }
+  
+  /**
+   * Updates the bird's y velocity caused by a flap given by flapUpSpeed
+   */
+  
+  flap() {
+    
+  }
+  
+  /**
+   * @type {Point}
+   */
+  
+  get position() {
+    // getter for current position of Bird
+  }
+  
+  
+}
+
+class Controller {
+  
+  
+}
+
+
+
+
+b = new Bird();
