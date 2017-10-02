@@ -53,12 +53,12 @@ class Bird {
    * @param {number} flapUpSpeed - The y velocity (opposite direction of gravity) caused by a flap
    */
   
-  constructor(startPosition, startXSpeed, gravity, flapUpSpeed, b) {
+  constructor(startPosition, startXSpeed, gravity, flapUpSpeed,) {
   
     this.myPosition = (x,y);
     this.myStartSpeed = x*0;
-  
-    document.getElementById("game").addEventListener("click", m.flap);
+    this.myGravity = y-10;
+    this.flapSpeed = y+5;
   }
   
   /**
@@ -67,7 +67,7 @@ class Bird {
    */
   
   move(secondsElapsed) {
-    
+    this.myPosition = this.myPosition + this.myGravity;
   }
   
   /**
@@ -75,8 +75,8 @@ class Bird {
    */
   
   flap() {
-    
-  }
+    this.flapSpeed = this.flapSpeed + 10;
+  } 
   
   /**
    * @type {Point}
@@ -84,6 +84,7 @@ class Bird {
   
   get position() {
     // getter for current position of Bird
+    return this.myPosition;
   }
   
   
@@ -91,10 +92,10 @@ class Bird {
 
 class Controller {
   
+  constructor(m){
+    document.getElementById("game").addEventListener("click", m.flap.bind(m));
+  }
   
 }
 
-
-
-
-b = new Bird();
+let b = new Bird();
