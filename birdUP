@@ -1,31 +1,22 @@
+let msToSec = milliseconds => milliseconds/1000;
+let distance = (v, t) => v * t;
+
+let canvasElement = document.getElementById("game");
+let gameContext = canvasElement.getContext("2d");
+let birdImage = new Image();
+let skyBackgroundImage = new Image();
+
+/** Class representing a point with 2 coordinates. */
 class Point {
-    
     /**
      * Create a point.
      * @param {number} x - The x value.
      * @param {number} y - The y value.
      */
     constructor(x, y) {  
-      this.myX = x;
-      this.myY = y;
-    }
-    
-    get x() {
-      return this.myX;
-    }
-    
-    set x(value) {
-      //this.myX = value;
-      throw new Error("Points are immutable.");
-    }
-    
-    get y() {
-      return this.myY;
-    }
-    
-    set y(value) {
-      //this.myY = value;
-      throw new Error("Points are immutable.");
+      // Fill in code to set attributes of point
+      this.x_ = x;
+      this.y_ = y;
     }
     
     /**
@@ -34,7 +25,15 @@ class Point {
      * @return {number} distance between itself and p
      */
     distance(p) {
-       return Math.sqrt((p.x - this.myX)**2 + (p.y - this.myY)**2);
+       return Math.sqrt((this.x_ - p.x)**2 + (this.y_ - p.y)**2);
+    }
+    
+    get x() {
+      return this.x_;
+    }
+    
+    get y() {
+      return this.y_;
     }
 }
 
@@ -42,7 +41,6 @@ class Point {
 /**
  * A Bird class maintains the position of a bird over time
  */
-
 class Bird {
   
   /**
@@ -53,12 +51,11 @@ class Bird {
    * @param {number} flapUpSpeed - The y velocity (opposite direction of gravity) caused by a flap
    */
   
-  constructor(startPosition, startXSpeed, gravity, flapUpSpeed,) {
-  
-    this.myPosition = (x,y);
-    this.myStartSpeed = x*0;
-    this.myGravity = y-10;
-    this.flapSpeed = y+5;
+  constructor(startPosition, startXSpeed, gravity, flapUpSpeed) {
+    this.position = (this.x_,this.y_);
+    this.myStartSpeed = this.x_*0;
+    this.myGravity = this.y_-10;
+    this.flapSpeed = this.y_+5;
   }
   
   /**
@@ -67,7 +64,7 @@ class Bird {
    */
   
   move(secondsElapsed) {
-    this.myPosition = this.myPosition + this.myGravity;
+    this.position = this.position + this.myGravity;
   }
   
   /**
@@ -75,8 +72,8 @@ class Bird {
    */
   
   flap() {
-    this.flapSpeed = this.flapSpeed + 10;
-  } 
+    this.position = this.position + this.flapSpeed;
+  }
   
   /**
    * @type {Point}
@@ -84,18 +81,66 @@ class Bird {
   
   get position() {
     // getter for current position of Bird
-    return this.myPosition;
+    return this.position;
   }
-  
-  
 }
 
+/********************* YOUR CONTROLLER CODE HERE **********************/
 class Controller {
-  
+
   constructor(m){
-    document.getElementById("game").addEventListener("click", m.flap.bind(m));
+    this.control = document.getElementById("game").addEventListener("click", m.flap.bind(m));
   }
-  
 }
 
-let b = new Bird();
+
+/*********************************************************************/
+
+class WorldView {
+
+  constructor(bird, sky){
+    this.model = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
+    this.canvas = "cloud-background.jpg";
+  }
+
+}
+
+class Render {
+  
+  constructor(){
+    this.model.position.x_ = 20;
+    this.y_ = this.model.position;
+  }  
+    
+}
+
+birdImage.src = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
+skyBackgroundImage.src = skyImageData; //"cloud-background.jpg"
+
+let startX = 5;
+let birdXSpeed = 200; // pixels per second
+
+let render = milliseconds => {
+  // clears canvas (clears rectangle with dimensions of canvasWidth x canvasHeight
+  // with top left corner at (0,0), i.e., canvas's top left corner)
+  gameContext.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  
+  // update position according to velocity
+  currentX = startX + distance(birdXSpeed, msToSec(milliseconds));
+
+  // draw bird in new position (x, y, bird's width, bird's height)
+  gameContext.drawImage(birdImage, currentX, 10, birdImage.width, birdImage.height);
+  
+  //console.log(milliseconds);
+  
+  requestAnimationFrame(render);
+};
+
+requestAnimationFrame(render);
+
+// Below is not needed since image eventually loads on some frame
+
+//img.onload = function() {
+//  gameContext.drawImage(img, 5, 10);
+//}
+
