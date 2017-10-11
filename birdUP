@@ -1,10 +1,31 @@
 let msToSec = milliseconds => milliseconds/1000;
-let distance = (v, t) => v * t;
+let distance = (v, t) => v * t % 320;
 
 let canvasElement = document.getElementById("game");
 let gameContext = canvasElement.getContext("2d");
 let birdImage = new Image();
 let skyBackgroundImage = new Image();
+
+birdImage.src = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
+skyBackgroundImage.src = skyImageData; //"cloud-background.jpg"
+
+let startX = 0;
+let birdXSpeed = 0; // pixels per second
+
+let render = milliseconds => {
+gameContext.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+currentX = startX + distance(-100, msToSec(milliseconds));
+gameContext.drawImage(skyBackgroundImage, currentX, 0, skyBackgroundImage.width, skyBackgroundImage.height);
+gameContext.drawImage(birdImage, 0, 10, birdImage.width, birdImage.height);
+
+
+
+requestAnimationFrame(render);
+};
+
+requestAnimationFrame(render);
+
 
 /** Class representing a point with 2 coordinates. */
 class Point {
@@ -52,10 +73,10 @@ class Bird {
    */
   
   constructor(startPosition, startXSpeed, gravity, flapUpSpeed) {
-    this.position = (this.x_,this.y_);
-    this.myStartSpeed = this.x_*0;
-    this.myGravity = this.y_-10;
-    this.flapSpeed = this.y_+5;
+    this.position = startPosition;
+    this.myStartSpeed = startXSpeed*0;
+    this.myGravity = gravity-10;
+    this.flapSpeed = flapUpSpeed+5;
   }
   
   /**
@@ -113,34 +134,3 @@ class Render {
   }  
     
 }
-
-birdImage.src = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
-skyBackgroundImage.src = skyImageData; //"cloud-background.jpg"
-
-let startX = 5;
-let birdXSpeed = 200; // pixels per second
-
-let render = milliseconds => {
-  // clears canvas (clears rectangle with dimensions of canvasWidth x canvasHeight
-  // with top left corner at (0,0), i.e., canvas's top left corner)
-  gameContext.clearRect(0, 0, canvasElement.width, canvasElement.height);
-  
-  // update position according to velocity
-  currentX = startX + distance(birdXSpeed, msToSec(milliseconds));
-
-  // draw bird in new position (x, y, bird's width, bird's height)
-  gameContext.drawImage(birdImage, currentX, 10, birdImage.width, birdImage.height);
-  
-  //console.log(milliseconds);
-  
-  requestAnimationFrame(render);
-};
-
-requestAnimationFrame(render);
-
-// Below is not needed since image eventually loads on some frame
-
-//img.onload = function() {
-//  gameContext.drawImage(img, 5, 10);
-//}
-
