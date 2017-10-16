@@ -7,7 +7,7 @@ let birdImage = new Image();
 let skyBackgroundImage = new Image();
 
 birdImage.src = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
-skyBackgroundImage.src = skyImageData; //"cloud-background.jpg"
+skyBackgroundImage.src = "cloud-background.jpg";
 
 let startX = 0;
 let birdXSpeed = 0; // pixels per second
@@ -50,7 +50,7 @@ class Point {
     }
     
     get x() {
-      return this.x_;
+      return this.x_; //this.myPosition.x
     }
     
     get y() {
@@ -73,10 +73,11 @@ class Bird {
    */
   
   constructor(startPosition, startXSpeed, gravity, flapUpSpeed) {
-    this.position = startPosition;
-    this.myStartSpeed = startXSpeed*0;
-    this.myGravity = gravity-10;
-    this.flapSpeed = flapUpSpeed+5;
+    this.myPosition = startPosition;
+    this.myCurrentXSpeed = startXSpeed;
+    this.myGravity = gravity;
+    this.flapSpeed = flapUpSpeed;
+    this.myCurrentYSpeed = 0;
   }
   
   /**
@@ -85,7 +86,10 @@ class Bird {
    */
   
   move(secondsElapsed) {
-    this.position = this.position + this.myGravity;
+    let newX = this.myPosition.x + secondsElapsed*this.myCurrentXSpeed;
+    let newY = this.myPosition.y + secondsElapsed*this.myCurrentYSpeed;
+    this.myPosition = new Point(newX, newY);
+     
   }
   
   /**
@@ -93,7 +97,7 @@ class Bird {
    */
   
   flap() {
-    this.position = this.position + this.flapSpeed;
+    startPosition + flapUpSpeed;
   }
   
   /**
@@ -120,8 +124,8 @@ class Controller {
 class WorldView {
 
   constructor(bird, sky){
-    this.model = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
-    this.canvas = "cloud-background.jpg";
+    this.model = birdImage.src;
+    this.canvas = skyBackgroundImage.src;
   }
 
 }
@@ -134,3 +138,7 @@ class Render {
   }  
     
 }
+
+
+
+
