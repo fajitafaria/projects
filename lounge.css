@@ -2,27 +2,15 @@ body {
 	font-family: sans-serif;
 }
 
-em {
-	color: orange;
-}
-
 p {
-  color: maroon;  
-}    
-
-h1, h2 {
-	color: grey;
-    font-family: sans-serif;
-}
-
-h1 {
-	/*border-bottom: 1px solid black;*/
-    text-decoration: underline;
+	color: maroon;
+	font-weight: bold;
 }
 
 .greentea {
 	color: green;
 }
+
 .raspberry {
 	color: blue;
 }
@@ -32,3 +20,14 @@ h1 {
 }
 
 
+em.greentea {
+	color: maroon;
+}
+
+h1, h2 {
+	color: gray;
+}
+
+h1 {
+	border-bottom: 1px solid black;
+}
