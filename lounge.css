@@ -17,15 +17,15 @@ body {
 }
 */
 .greentea {
-	color:green;
+  color:green;
 }
 
 .raspberry {
-	color:blue;
+  color:blue;
 }
 
 .blueberry {
-	color:purple;
+  color:purple;
 }
 
 p {  
@@ -49,13 +49,13 @@ h2 {
 }
 
 em {
-	font-family:serif;
+  font-family:serif;
     /*color:blue;*/
     color:red;
 }
 
 em {
-	color:blue;
+  color:blue;
 }
 
 #guarantee {
@@ -71,11 +71,68 @@ em {
     margin-top: 30px;
     margin-bottom: 30px;
     margin-left: 30px;
+    color: white;
 }
 
 #elixirs {
     border: thin solid #007e7e;
+    text-align: center;
     width: 200px;
+    padding: 0 10px 10px  10px;
+    /*margin-left: auto;
+    margin-right: auto;*/
+    margin-left: 20px;
+    line-height: 1;
+}
+
+#elixirs h2 {
+    color: black;
+}
+
+#elixirs h3 {
+    color: #d12c47;
+}
+
+#copyright {
+    font-size: 50%;
+    text-align: center;
+    line-height: normal;
+    margin-top: 30px;
+}
+
+.cd-title {
+    font-style: italic; 
+}
+
+.artist {
+    font-weight: bold;
+}
+
+#music {
+    border: 5px outset #f00;
+}
+
+a:link {
+    color: #007e7e;
+}
+
+a:visited {
+    color: #333;
+}
+
+a:active {
+    color: #f88396;
+}
+
+a:focus {
+    border: thick solid #0d5353;
+    color: orange;
+}
+
+#elixirs a:hover {
+    background-color: #f88396;
+    color: #0d5353;
+    
 }
 
 @media screen and (max-width: 480px) {
@@ -95,9 +152,8 @@ em {
 
 /*
 em.description {
-	font-weight: bold;
+  font-weight: bold;
 }
-
 .red {
-	background-color:red;
+  background-color:red;
 }*/
