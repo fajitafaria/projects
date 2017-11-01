@@ -1,5 +1,7 @@
 //https://repl.it/Kwt3/366
 
+//https://repl.it/Kwt3/499
+
 /** Class representing a point with 2 coordinates. */
 class Point {
     /**
