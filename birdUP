@@ -2,6 +2,10 @@
 
 //https://repl.it/Kwt3/499
 
+//https://repl.it/NqAJ/1 - 3d point class
+//https://repl.it/Kwt3/660
+
+
 /** Class representing a point with 2 coordinates. */
 class Point {
     /**
