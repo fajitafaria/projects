@@ -1,0 +1,116 @@
+class Point {
+  constructor(x, y) {
+    this.x_ = x;
+    this.y_ = y;
+    this.z_ = 0;
+  }
+  
+  get x() {
+    return this.x_;
+  }
+  
+  get y() {
+    return this.y_;
+  }
+  
+  get z() {
+    return this.z_;
+  }
+  
+  decreaseZ(amount) {
+    this.z_ = this.z_ - amount;
+  }
+  
+  increaseZ(amount) {
+    this.z_ = this.z_ + amount;
+  }
+}
+
+
+class Pipe {
+  
+  constructor(position){
+    this.position_ = position;
+    this.gap_ = 100;
+    this.width_ = 52;
+    this.height_ = 320;
+  } 
+  
+  get gap() {
+    return this.gap_;
+  }
+  
+  get position() {
+    return this.position_;
+  }
+  
+  get height() {
+    return this.height_;
+  }
+  
+  
+  moveUp() {
+    this.position_ = new Point(this.position_.x, this.position_.y + 1);
+    
+  } 
+  
+  moveDown() {
+    this.position_ = new Point(this.position_.x, this.position_.y - 1);
+  }
+  
+}
+
+class PipeView {
+  constructor(p){
+    this.model_ = p;
+    this.canvasElement = document.getElementById("game");
+    this.pipeContext_ = this.canvasElement_.getContext("2d");
+  }
+}
+
+class World {
+  constructor(){
+    
+  }
+}
+
+class PipeWorld {
+  constructor() {
+    this.pipes_ = [];
+    let currentPoint= new Point(250, Math.floor(Math.random()*-300));
+    for(let i= 1; i<= 3; i++) {
+      this.pipes_.push(new Furby(currentPoint, 50));
+      currentPoint= new Point(currentPoint.x+ 250, currentPoint.y + Math.floor(Math.random()*-300));
+    }
+  }
+  
+  getPipeNumber(n) {
+    return this.pipes_[n];
+  }
+  
+  getNumberOfPipes() {
+    return this.furbies_.length;
+  }
+  
+  getBirdPosition() {
+    return this.birdmodel.position;
+  }
+  
+  flap(){
+    return this.birdmodel.flap
+  }
+  
+}
+
+class WorldView {
+  constructor(w) {
+    this.model_ = p;
+    this.canvasElement_ = document.getElementById("game");
+    this.pipeContext_ = this.canvasElement_.getContext("2d");
+    this.pipeBottomImage_.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_bottom.png";
+    this.pipeTopImage_ .src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_top.png";
+    this.birdImage_.src = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
+  }
+}
+
+
