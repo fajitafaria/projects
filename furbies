@@ -1,0 +1,142 @@
+class Point {
+  constructor(x, y) {
+    this.x_ = x;
+    this.y_ = y;
+    this.z_ = 0;
+  }
+  
+  get x() {
+    return this.x_;
+  }
+  
+  get y() {
+    return this.y_;
+  }
+  
+  get z() {
+    return this.z_;
+  }
+  
+  decreaseZ(amount) {
+    this.z_ = this.z_ - amount;
+  }
+  
+  increaseZ(amount) {
+    this.z_ = this.z_ + amount;
+  }
+}
+
+class Furby {
+  constructor(position, width) {
+    this.position_ = position;
+    this.width_ = width;
+    this.height_ = 43/44*width;
+  }
+  
+  get position() {
+    return this.position_;
+  }
+  
+  get width() {
+    return this.width_;
+  }
+  
+  get height() {
+    return this.height_;
+  }
+  
+}
+/*
+class FurbyView {
+  constructor(f) {
+    this.model_ = f;
+    this.canvasElement_ = document.getElementById("game");
+    this.furbyContext_ = this.canvasElement_.getContext("2d");
+    this.furbyContext_.fillStyle= "grey";
+    this.furbyImage_ = new Image();
+    this.furbyImage_.src= "https://upload.wikimedia.org/wikipedia/en/7/70/Furby_picture.jpg";
+    
+  }
+  render() {
+    let furbyXPosition= this.model_.position.x;
+    let furbyYPosition= this.model_.position.y;
+    //this.furbyContext_.clearRect(0,0,this.canvas_.width, this.canvas_.height);   
+    this.furbyContext_.fillRect(furbyXPosition-5,furbyYPosition-5,
+        this.model_.width+10, this.model_.height+10);
+    this.furbyContext_.drawImage(this.furbyImage_, furbyXPosition,
+        furbyYPosition, this.model_.width, this.model_.height);
+    }
+
+}
+*/
+
+class FurbyWorld{
+  constructor() {
+    this.furbies_ = [];
+    let currentPoint= new Point(10+Math.floor(Math.random()*50),
+                                10+Math.floor(Math.random()*40));
+    for(let i= 1; i<= 5; i++) {
+      this.furbies_.push(new Furby(currentPoint, 50));
+      currentPoint= new Point(currentPoint.x+ 42, currentPoint.y+ 42);
+    }
+  }
+  
+  getFurbyNumber(n) {
+    return this.furbies_[n];
+  }
+  getNumberOfFurbies() {
+    return this.furbies_.length;
+  }
+}
+
+class FurbyWorldView{
+  constructor(w) {
+  this.model_ = w;
+  this.canvasElement_ = document.getElementById("game");
+  this.furbyContext_ = this.canvasElement_.getContext("2d");
+  this.furbyContext_.fillStyle= "grey";this.furbyImage_ = new Image();
+  this.furbyImage_.src= "https://upload.wikimedia.org/wikipedia/en/7/70/Furby_picture.jpg";
+  }
+
+  render() {
+    let numberOfFurbies= this.model_.getNumberOfFurbies();
+    this.furbyContext_.clearRect(0,0,this.canvasElement_.width, this.canvasElement_.height);
+    for(let i= 0; i< numberOfFurbies; i++) {
+      let currentFurby= this.model_.getFurbyNumber(i); 
+      let furbyXPosition= currentFurby.position.x;
+      let furbyYPosition= currentFurby.position.y;
+      this.furbyContext_.fillRect(furbyXPosition-5,furbyYPosition-5,
+                     currentFurby.width+10, currentFurby.height+10);
+      this.furbyContext_.drawImage(this.furbyImage_, furbyXPosition,
+            furbyYPosition, currentFurby.width, currentFurby.height);
+    }
+  }
+}
+
+let fvw= new FurbyWorldView(new FurbyWorld());
+fvw.render();
+
+
+
+
+/*
+let p1 = new Point(10 + Math.floor(Math.random()*10), 10 + Math.floor(Math.random()*10));
+let p2 = new Point(p1.x + 90, p1.y + 90);
+let p3 = new Point(p2.x + 90, p2.y + 90);
+console.log(p1);
+console.log(p2);
+console.log(p3);
+
+let f = new Furby(p1, 100);
+let fv= new FurbyView(f);
+fv.render();
+let f2 = new Furby(p2, 100);
+let fv2 = new FurbyView(f2);
+fv2.render();
+let f3 = new Furby(p3, 100);
+let fv3 = new FurbyView(f3);
+fv3.render();
+
+console.log(f.position.x);
+console.log(f.height);
+*/
