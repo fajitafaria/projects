@@ -79,7 +79,7 @@ class PipeWorld {
     this.pipes_ = [];
     let currentPoint= new Point(250, Math.floor(Math.random()*-300));
     for(let i= 1; i<= 3; i++) {
-      this.pipes_.push(new Furby(currentPoint, 50));
+      this.pipes_.push(new Pipe(currentPoint, 50));
       currentPoint= new Point(currentPoint.x+ 250, currentPoint.y + Math.floor(Math.random()*-300));
     }
   }
@@ -89,7 +89,7 @@ class PipeWorld {
   }
   
   getNumberOfPipes() {
-    return this.furbies_.length;
+    return this.pipes_.length;
   }
   
   getBirdPosition() {
@@ -111,6 +111,21 @@ class WorldView {
     this.pipeTopImage_ .src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_top.png";
     this.birdImage_.src = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
   }
+  
+  render() {
+    let numberOfPipes= this.model_.getNumberOfPipes();
+      this.pipeContext_.clearRect(0,0,this.canvasElement_.width, this.canvasElement_.height);
+      for(let i= 0; i< numberOfPipes; i++) {
+        let currentPipe= this.model_.getPipeNumber(i); 
+        let pipeXPosition= currentPipe.position.x;
+        let pipeYPosition= currentPipe.position.y;
+        this.pipeContext_.fillRect(pipeXPosition-5,pipeYPosition-5,
+                       currentpipe.width+10, currentpipe.height+10);
+        this.pipeContext_.drawImage(this.pipeTopImage_, pipeXPosition,
+              (pipeYPosition + currentPipe.height + pipes_.gap), currentPipe.width, currentPipe.height);
+    }
+  }
 }
 
-
+let pvw= new WorldView(new PipeWorld());
+pvw.render();
