@@ -1,0 +1,440 @@
+/** Class representing a point with 2 coordinates. */
+class Point {
+    /**
+     * Create a point.
+     * @param {number} x - The x value.
+     * @param {number} y - The y value.
+     */
+    constructor(x, y) {  
+      // Fill in code to set attributes of point
+      this.x_ = x;
+      this.y_ = y;
+    }
+    
+    /**
+     * Returns the distance between itself and another point
+     * @param {Point} p the point to find the distance between
+     * @return {number} distance between itself and p
+     */
+    distance(p) {
+       return Math.sqrt((this.x_ - p.x)**2 + (this.y_ - p.y)**2);
+    }
+    
+    get x() {
+      return this.x_; //this.myPosition.x
+    }
+    
+    get y() {
+      return this.y_;
+    }
+}
+
+/**
+ * A Bird class maintains the position of a bird over time
+ */
+class Bird {
+  
+  /**
+   * Create a new Bird.
+   * @param {Point} startPosition - The 2D starting position of the Bird (x, y)
+   * @param {number} startXSpeed - The starting horizontal speed of the bird (pixels/second)
+   * @param {number} gravity - The change in the y velocity due to gravity (pixels/second)
+   * @param {number} flapUpSpeed - The y velocity (opposite direction of gravity) caused by a flap
+   */
+  
+  constructor(startPosition, startXSpeed, gravity, flapUpSpeed) {
+    this.myPosition = startPosition;
+    this.myCurrentXSpeed = startXSpeed;
+    this.myGravity = gravity;
+    this.flapSpeed = -flapUpSpeed;
+    this.myCurrentYSpeed = 0; 
+  }
+  
+  /**
+   * Updates the position of the bird (both x and y coordinates)
+   * @param {number} secondsElapsed - the number of seconds that passed since the last move
+   */
+  
+  move(secondsElapsed) {
+    // document.getElementById("input").value=secondsElapsed;
+    this.newX = this.myPosition.x + secondsElapsed*this.myCurrentXSpeed;
+    this.newY = this.myPosition.y + secondsElapsed*this.myCurrentYSpeed;
+    this.myPosition = new Point(this.newX, this.newY);
+    this.myCurrentYSpeed = this.myCurrentYSpeed + secondsElapsed*this.myGravity;
+  }
+  
+  /**
+   * Updates the bird's y velocity caused by a flap given by flapUpSpeed
+   */
+  
+  flap() {
+    this.myCurrentYSpeed = this.flapSpeed;
+  }
+  
+  /**
+   * @type {Point}
+   */
+  
+  get position() {
+    // getter for current position of Bird
+    return this.myPosition;
+  }
+}
+
+// this is actually just bird view
+
+
+/********************* YOUR CONTROLLER CODE HERE **********************/
+class Controller {
+
+  constructor(m, pw){
+    window.addEventListener("click", m.flap.bind(m));
+    this.m = m;
+    this.pw = pw;
+    this.v = new WorldView(m, pw);
+    //this.pwv = new PipeWorldView(pw);
+  }
+  
+  start() {
+    this.lastTimeBirdMove=0;
+    this.runGame = ms => {
+      this.m.move(msToSec(ms - this.lastTimeBirdMove));
+      this.pw.move();
+      this.v.render();
+      //this.pwv.render();
+      this.lastTimeBirdMove = ms;
+      requestAnimationFrame(this.runGame);
+    };
+    
+    requestAnimationFrame(this.runGame);
+  }
+  
+}
+
+/*********************************************************************/
+
+class Pipe {
+  
+  constructor(position){
+    this.position_ = position;
+    // this.gap_ = 100;
+    // this.width_ = 52;
+    // this.height_ = 320;
+  } 
+  
+  // get gap() {
+  //   return this.gap_;
+  // }
+  
+  get position() {
+    return this.position_;
+  }
+  
+  // get height() {
+  //   return this.height_;
+  // }
+  
+  // moveUp() {
+  //   this.position_ = new Point(this.position_.x, this.position_.y + 1);
+    
+  // } 
+  
+  // moveDown() {
+  //   this.position_ = new Point(this.position_.x, this.position_.y - 1);
+  // }
+  
+}
+
+class World {
+  constructor(position, width){
+    this.position_ = position;
+    this.width_ = width;
+  }
+  
+  get position() {
+    return this.position_;
+  }
+  
+  get width() {
+    return this.width_;
+  }
+  
+  move(){
+    
+  }
+
+}
+
+class PipeWorld {
+  constructor() {
+    this.bottomPipes_ = [];
+    this.topPipes_ = [];
+    this.pipeGap_ = 120;
+    this.height_ = 320;
+    
+    // TEMPORARY *****************************
+    this.pipeSpeed_ = -1;
+    
+    // TOP PIPES
+    let currentPoint= new Point(250, Math.floor(Math.random()*-300));
+    
+    for(let i=0; i<4; i++) {
+      this.topPipes_.push(new Pipe(currentPoint));
+      currentPoint= new Point(currentPoint.x+ 250, Math.floor(Math.random()*-300));
+    }
+    
+    // BOTTOM PIPES 
+    currentPoint= new Point(250, this.topPipes_[0].position.y+this.height_+this.pipeGap_+this.height_);
+    
+    for(let i=1; i<=4; i++) {
+      // push pipe (first pipe, then 2nd...etc)
+      this.bottomPipes_.push(new Pipe(currentPoint));
+      
+      currentPoint= new Point(currentPoint.x + 250, 480); // relpace 480 with this.topPipes_[0].position.y+320+this.pipeGap_+320
+    }
+    
+    
+  }
+  
+  // TEMPORARY *****************************
+  move(){
+     
+    //TOP
+    // for(let i=0; i<4; i++) {
+    //   console.log(pw.getTopArray());
+    //   this.topPipes_[i] = new Pipe(new Point(this.topPipes_[i].position.x + this.pipeSpeed_, this.topPipes_[i].y));
+    // }
+    
+    // // BOTTOM
+    // for(let i=0; i<=4; i++) {
+    //   this.bottomPipes_[i] = new Pipe(new Point(this.bottomPipes_[i].position.x + this.pipeSpeed_, this.bottomPipes_[i].y));
+    // }
+    
+  } // move
+  
+  getTopPipeNumber(n) {
+    return this.topPipes_[n];
+  }
+  
+  getNumberOfTopPipes() {
+    return this.topPipes_.length;
+  }
+  
+  getBottomPipeNumber(n) {
+    return this.bottomPipes_[n];
+  }
+  
+  getNumberOfBottomPipes() {
+    return this.bottomPipes_.length;
+  }
+  
+  getTopArray() {
+    return this.topPipes_;
+  }
+  
+  getBottomArray() {
+    return this.bottomPipes_;
+  }
+
+}  
+    
+
+
+class WorldView {
+
+  constructor(model, pw){
+    this.birdModel = model; 
+    this.canvasElement = document.getElementById("game");
+    this.gameContext = this.canvasElement.getContext("2d");
+    this.birdImage = new Image();
+    this.skyBackgroundImage = new Image();
+    this.birdImage.src = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
+    this.skyBackgroundImage.src = skyImageData; //"cloud-background.jpg"
+    this.pw_ = pw;
+    this.canvasElement_ = document.getElementById("game");
+    this.pipeContext_ = this.canvasElement_.getContext("2d");
+    this.pipeBottomImage_ = new Image();
+    this.pipeTopImage_ = new Image();
+    this.pipeBottomImage_.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_bottom.png";
+    this.pipeTopImage_.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_top.png";
+  }
+
+  render(){
+    document.getElementById("input").value=this.birdModel.position.x;
+    this.gameContext.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);  
+    this.gameContext.drawImage(this.skyBackgroundImage, -(this.birdModel.position.x)% (this.skyBackgroundImage.width-this.canvasElement.width), 0, this.skyBackgroundImage.width, this.skyBackgroundImage.height);
+    this.gameContext.drawImage(this.birdImage, 5, Math.trunc(this.birdModel.position.y), this.birdImage.width, this.birdImage.height);
+    
+    // TOP PIPES RENDER
+    for(let i= 0; i< this.pw_.getNumberOfTopPipes(); i++) {
+      this.pipeContext_.drawImage(this.pipeTopImage_, this.pw_.getTopPipeNumber(i).position.x,
+      this.pw_.getTopPipeNumber(i).position.y, this.pipeTopImage_.width, this.pipeTopImage_.height);
+    }
+  
+    // BOTTOM PIPES RENDER
+    for(let i= 0; i< this.pw_.getNumberOfBottomPipes(); i++) {
+      this.pipeContext_.drawImage(this.pipeBottomImage_, this.pw_.getBottomPipeNumber(i).position.x, this.pw_.getBottomPipeNumber(i).position.y, this.pipeBottomImage_.width, -this.pipeBottomImage_.height);
+    }
+    
+  }
+  
+}
+
+
+
+/*
+class PipeWorldView {
+  constructor(pw) {
+    this.pw_ = pw;
+    this.canvasElement_ = document.getElementById("game");
+    this.pipeContext_ = this.canvasElement_.getContext("2d");
+    this.pipeBottomImage_ = new Image();
+    this.pipeTopImage_ = new Image();
+    this.pipeBottomImage_.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_bottom.png";
+    this.pipeTopImage_.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_top.png";
+  }
+  
+  render() {
+    // let numberOfPipes= this.model_.getNumberOfPipes();
+      // this.pipeContext_.clearRect(0,0,this.canvasElement_.width, this.canvasElement_.height);
+      
+      // let currentPipe= this.model_.getPipeNumber(i); 
+      // let pipeXPosition= currentPipe.position.x;
+      // let pipeYPosition= currentPipe.position.y;
+      
+      // TOP PIPES RENDER
+      for(let i= 0; i< this.pw_.getNumberOfTopPipes(); i++) {
+        this.pipeContext_.drawImage(this.pipeTopImage_, this.pw_.getTopPipeNumber(i).position.x,
+              this.pw_.getTopPipeNumber(i).position.y, this.pipeTopImage_.width, this.pipeTopImage_.height);
+    }
+  
+    // BOTTOM PIPES RENDER
+      for(let i= 0; i< this.pw_.getNumberOfBottomPipes(); i++) {
+        this.pipeContext_.drawImage(this.pipeBottomImage_, this.pw_.getBottomPipeNumber(i).position.x, this.pw_.getBottomPipeNumber(i).position.y, this.pipeBottomImage_.width, -this.pipeBottomImage_.height);
+    }
+    
+  }
+}
+*/
+let msToSec = milliseconds => milliseconds/1000;
+let distance = (v, t) => v * t; 
+
+let startX = 0;
+let birdXSpeed =  300; // pixels per second
+
+let start = new Point(startX,10);
+let m = new Bird(start, birdXSpeed, 200, 130);
+let pw= new PipeWorld();
+
+// console.log(pw.getTopArray());
+// console.log(pw.getBottomArray());
+
+let c = new Controller(m, pw);
+c.start();
+
+// let canvasElement = document.getElementById("game");
+// let gameContext = canvasElement.getContext("2d");
+// let birdImage = new Image();
+// let skyBackgroundImage = new Image();
+// let topPipe = new Image();
+// let bottomPipe = new Image();
+// let previousTime=0;
+
+// let pvw= new PipeWorldView(new PipeWorld());
+// pvw.render();
+
+
+// birdImage.src = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
+// skyBackgroundImage.src = skyImageData; //"cloud-background.jpg"
+// topPipe.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_top.png";
+// bottomPipe.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_bottom.png";
+
+//let pipeArray = [];
+//pipeArray.push()
+
+// let p1 = new Point(100, Math.random()*-300);
+// let p2 = new Point(200, Math.random()*-300);
+// let p3 = new Point(300, Math.random()*-300);
+// let p4 = new Point(400, Math.random()*-300);
+
+// console.log(p1.x, p1.y);
+// console.log(p2.x, p2.y);
+// console.log(p3.x, p3.y);
+// console.log(p4.x, p4.y);
+
+// let pipe1 = new Pipe(p1.position);
+// let pipe2 = new Pipe(p2.position);
+// let pipe3 = new Pipe(p3.position);
+// let pipe4 = new Pipe(p4.position);
+
+// console.log(pipe1);
+
+
+// let render = milliseconds => {
+// gameContext.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+// currentCloudX = startX + distance(-100, msToSec(milliseconds));
+
+// gameContext.drawImage(skyBackgroundImage, currentCloudX, 0, skyBackgroundImage.width, skyBackgroundImage.height);
+// gameContext.drawImage(birdImage, startX, Math.floor(m.position.y), birdImage.width, birdImage.height);
+
+// m.move(msToSec(milliseconds-previousTime));
+// previous=milliseconds;
+
+// requestAnimationFrame(render);
+// };
+
+// requestAnimationFrame(render);
+
+// let p = new Point(0, 0);
+// let b = new Bird(p, 10, 5, 2);
+// b.move;
+// console.log(b);
+
+/*
+class Pipe {
+  
+  constructor(position){
+    this.position_ = position;
+    this.gap_ = 450;
+    this.width_ = 52;
+    this.height_ = 320;
+  } 
+  
+  get gap() {
+    return this.gap_;
+  }
+  
+  get position() {
+    return this.position_;
+  }
+  
+  get height() {
+    return this.height_;
+  }
+  
+  
+  
+  moveUp() {
+    this.position_ = new Point(this.position_.x, this.position_.y + 1);
+    
+  } 
+  
+  moveDown() {
+    this.position_ = new Point(this.position_.x, this.position_.y - 1);
+  }
+  
+}
+
+
+class World {
+  
+  constructor(){
+    this.topPipe = new Image();
+    this.bottomPipe = new Image();
+    this.topPipe.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_top.png";
+    this.bottomPipe.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_bottom.png";
+  }
+  
+}
+*/
