@@ -1,0 +1,297 @@
+/** Class representing a point with 2 coordinates. */
+class Point {
+    /**
+     * Create a point.
+     * @param {number} x - The x value.
+     * @param {number} y - The y value.
+     */
+    constructor(x, y) {  
+      // Fill in code to set attributes of point
+      this.x_ = x;
+      this.y_ = y;
+    }
+    
+    /**
+     * Returns the distance between itself and another point
+     * @param {Point} p the point to find the distance between
+     * @return {number} distance between itself and p
+     */
+    distance(p) {
+       return Math.sqrt((this.x_ - p.x)**2 + (this.y_ - p.y)**2);
+    }
+    
+    get x() {
+      return this.x_; //this.myPosition.x
+    }
+    
+    get y() {
+      return this.y_;
+    }
+}
+
+/**
+ * A Bird class maintains the position of a bird over time
+ */
+class Bird {
+  
+  /**
+   * Create a new Bird.
+   * @param {Point} startPosition - The 2D starting position of the Bird (x, y)
+   * @param {number} startXSpeed - The starting horizontal speed of the bird (pixels/second)
+   * @param {number} gravity - The change in the y velocity due to gravity (pixels/second)
+   * @param {number} flapUpSpeed - The y velocity (opposite direction of gravity) caused by a flap
+   */
+  
+  constructor(startPosition, startXSpeed, gravity, flapUpSpeed) {
+    this.myPosition = startPosition;
+    this.myCurrentXSpeed = startXSpeed;
+    this.myGravity = gravity;
+    this.flapSpeed = -flapUpSpeed; 
+    this.myCurrentYSpeed = 0; 
+  }
+  
+  /**
+   * Updates the position of the bird (both x and y coordinates)
+   * @param {number} secondsElapsed - the number of seconds that passed since the last move
+   */
+  
+  move(secondsElapsed) {
+    this.newX = this.myPosition.x + secondsElapsed*this.myCurrentXSpeed;
+    this.newY = this.myPosition.y + secondsElapsed*this.myCurrentYSpeed;
+    this.myPosition = new Point(this.newX, this.newY);
+    this.myCurrentYSpeed = this.myCurrentYSpeed + secondsElapsed*this.myGravity;
+  }
+  
+  /**
+   * Updates the bird's y velocity caused by a flap given by flapUpSpeed
+   */
+  
+  flap() {
+    this.myCurrentYSpeed = this.flapSpeed;
+  }
+  
+  /**
+   * @type {Point}
+   */
+  
+  get position() {
+    // getter for current position of Bird
+    return this.myPosition;
+  }
+}
+
+class Pipe {
+  
+  constructor(position){
+    this.position_ = position;
+    this.gap_ = 100;
+    this.width_ = 52;
+    this.height_ = 320;
+  } 
+  
+  get gap() {
+    return this.gap_;
+  }
+  
+  get width() {
+    return this.width_;
+  }
+  
+  get height() {
+    return this.height_;
+  }
+  
+  get position() {
+    return this.position_;
+  }
+  
+  
+}
+
+class PipeWorld {
+  constructor() {
+    this.pipes_ = [];
+    
+    // TEMPORARY *****************************
+    this.pipeSpeed_ = -1;
+    
+    // TOP PIPES
+    let currentPoint= new Point(350, Math.floor(Math.random()*-260));
+    
+    for(let i=0; i<4; i++) {
+      this.pipes_.push(new Pipe(currentPoint));
+      currentPoint = new Point(currentPoint.x+ 250, Math.floor(Math.random()*-260));
+    }
+    
+  }
+  
+  deleteFirstPipe() {
+    this.pipes_.shift();
+  }
+  
+  createNewPipe(newXPos, newYPos) {
+    this.pipes_.push(new Pipe(new Point(newXPos, newYPos)));
+  }
+  
+  getPipeNumber(n) {
+    return this.pipes_[n];
+  }
+  
+  getNumberOfPipes() {
+    return this.pipes_.length;
+  }
+}  
+
+class PipeWorldView {
+  constructor(pw) {
+    this.pw_ = pw;
+    this.pipeBottomImage_ = new Image();
+    this.pipeTopImage_ = new Image();
+    this.pipeBottomImage_.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_bottom.png";
+    this.pipeTopImage_.src = "https://studio.code.org/blockly/media/skins/flappy/obstacle_top.png";
+  }
+  
+  render(gameContext, newPipePositionX) {
+      // TOP PIPES RENDER
+      let currentPipe;
+
+      for(let i = 0; i < this.pw_.getNumberOfPipes(); i++) {
+        currentPipe = this.pw_.getPipeNumber(i);
+        
+        // TOP PIPE
+        gameContext.drawImage(this.pipeTopImage_, this.pw_.getPipeNumber(i).position.x - newPipePositionX,
+              this.pw_.getPipeNumber(i).position.y, this.pw_.getPipeNumber(i).width, this.pw_.getPipeNumber(i).height);
+              
+        // BOT PIPE
+        gameContext.drawImage(this.pipeBottomImage_, this.pw_.getPipeNumber(i).position.x - newPipePositionX, this.pw_.getPipeNumber(i).position.y + this.pw_.getPipeNumber(i).height + this.pw_.getPipeNumber(i).gap + this.pw_.getPipeNumber(i).height, this.pw_.getPipeNumber(i).width, -this.pw_.getPipeNumber(i).height);
+      }
+  }
+}
+
+class World {
+  
+  constructor(){
+    // startPosition, startXSpeed, gravity, flapUpSpeed
+    this.bird_ = new Bird(new Point(5,5), 200, 200, 130);
+    
+    this.pw_ = new PipeWorld();
+    
+    window.addEventListener("click", this.bird_.flap.bind(this.bird_));
+  }
+  
+  checkIfFirstPipeIsOffScreen() {
+    // CONDITION: 
+    if ( (this.pw_.getPipeNumber(0).position.x - this.bird_.position.x) < -this.pw_.getPipeNumber(0).width ) {
+      
+      // SHIFT
+      this.pw_.deleteFirstPipe();
+      
+      // PUSH
+      // TODO: Something is wrong with this method either on this end or in the pipe world class itself.
+      this.pw_.createNewPipe( (this.pw_.getPipeNumber(this.pw_.getNumberOfPipes()-1).x) + 250, Math.floor(Math.random()*-260) );
+    }
+  }
+  
+  checkForCollision() {
+    
+  }
+  
+  get bird() {
+    return this.bird_;
+  }
+  
+  get pipeWorld() {
+    return this.pw_;
+  }
+  
+}
+
+class WorldView {
+
+  constructor(world){
+    
+    // GET ACCESS TO MODEL GETTERS
+    this.w_ = world;
+    this.bird_ = this.w_.bird;
+    this.pw_ = this.w_.pipeWorld;
+    
+    // MAKE NEW PIPE WORLD VIEW OBJECT
+    this.pwv_ = new PipeWorldView(this.pw_);
+    
+    // VIEW PROPERTIES
+    this.canvasElement = document.getElementById("game");
+    this.gameContext = this.canvasElement.getContext("2d");
+    this.birdImage = new Image();
+    this.skyBackgroundImage = new Image();
+    this.birdImage.src = "https://studio.code.org/blockly/media/skins/flappy/avatar.png";
+    this.skyBackgroundImage.src = skyImageData; //"cloud-background.jpg"
+  }
+
+  render(){
+    
+    // CLEAR CANVAS
+    this.gameContext.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);  
+    
+    // DRAW SKY
+    this.gameContext.drawImage(this.skyBackgroundImage, -(this.bird_.position.x)% (this.skyBackgroundImage.width-this.canvasElement.width), 0, this.skyBackgroundImage.width, this.skyBackgroundImage.height);
+    
+    // DRAW BIRD
+    this.gameContext.drawImage(this.birdImage, 5, Math.trunc(this.bird_.position.y), this.birdImage.width, this.birdImage.height);
+    
+    // DRAW TOP AND BOTTOM PIPES
+    this.pwv_.render(this.gameContext, this.bird_.position.x);
+  }
+  
+}
+
+/********************* YOUR CONTROLLER CODE HERE **********************/
+class Controller {
+
+  constructor(){
+    this.w_ = new World();
+    this.wv_ = new WorldView(this.w_);
+  }
+  
+  start() {
+    this.lastTimeBirdMove=0;
+    
+    this.runGame = ms => {
+      // CHECK FOR: COLLISION, IF FIRST PIPE IS OFF SCREEN
+      this.w_.checkForCollision();
+      this.w_.checkIfFirstPipeIsOffScreen();
+      
+      // BIRD MOVES
+      this.w_.bird.move(msToSec(ms - this.lastTimeBirdMove));
+      
+      // RENDER CHANGES BASED ON BIRD'S MOVEMENT
+      this.wv_.render();
+      
+      // UPDATE lastTimeBirdMove
+      this.lastTimeBirdMove = ms;
+      
+      // ******** BUG TESTING ********
+      document.getElementById("input").value = this.w_.bird.position.x;
+      document.getElementById("firstPipe").value = this.w_.pipeWorld.getPipeNumber(0).position.x;
+      document.getElementById("lastPipe").value = this.w_.pipeWorld.getPipeNumber(this.w_.pipeWorld.getNumberOfPipes()-1).position.x;
+      // ********
+      
+      requestAnimationFrame(this.runGame);
+    };
+    
+    requestAnimationFrame(this.runGame);
+  }
+  
+}
+/*********************************************************************/
+
+let msToSec = milliseconds => milliseconds/1000;
+let distance = (v, t) => v * t; 
+
+let c = new Controller();
+c.start();
+
+
+
+
+
+
