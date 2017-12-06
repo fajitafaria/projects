@@ -1,4 +1,4 @@
- body {
+body {
 	background-color: #262626;
 	margin-left: 5%;
 	margin-right: 5%;
@@ -23,6 +23,7 @@ h1, h2 {
 }
 
 .column {
+  display: table-cell;
   margin: 10px 10px 0 0;
   border: solid white;
 }
@@ -89,9 +90,13 @@ li a {
 }
 
 li a:hover {
-    background-color: #111;
+    background-color: #666666;
 }
 
 .selected {
   background-color: #111;
+}
+
+#tablerow ol li {
+  color: white;
 }
