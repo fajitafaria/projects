@@ -159,11 +159,11 @@ class PipeWorldView {
         currentPipe = this.pw_.getPipeNumber(i);
         
         // TOP PIPE
-        gameContext.drawImage(this.pipeTopImage_, this.pw_.getPipeNumber(i).position.x - newPipePositionX,
-              this.pw_.getPipeNumber(i).position.y, this.pw_.getPipeNumber(i).width, this.pw_.getPipeNumber(i).height);
+        gameContext.drawImage(this.pipeTopImage_, currentPipe.position.x - newPipePositionX,
+              currentPipe.position.y, currentPipe.width, currentPipe.height);
               
         // BOT PIPE
-        gameContext.drawImage(this.pipeBottomImage_, this.pw_.getPipeNumber(i).position.x - newPipePositionX, this.pw_.getPipeNumber(i).position.y + this.pw_.getPipeNumber(i).height + this.pw_.getPipeNumber(i).gap + this.pw_.getPipeNumber(i).height, this.pw_.getPipeNumber(i).width, -this.pw_.getPipeNumber(i).height);
+        gameContext.drawImage(this.pipeBottomImage_, currentPipe.position.x - newPipePositionX, currentPipe.position.y + currentPipe.height + currentPipe.gap , currentPipe.width, currentPipe.height);
       }
   }
 }
@@ -182,13 +182,13 @@ class World {
   checkIfFirstPipeIsOffScreen() {
     // CONDITION: 
     if ( (this.pw_.getPipeNumber(0).position.x - this.bird_.position.x) < -this.pw_.getPipeNumber(0).width ) {
-      
+      document.getElementById("lastPipe").value = (this.pw_.getPipeNumber(this.pw_.getNumberOfPipes()-1)).position.x + 250 
       // SHIFT
       this.pw_.deleteFirstPipe();
       
       // PUSH
       // TODO: Something is wrong with this method either on this end or in the pipe world class itself.
-      this.pw_.createNewPipe( (this.pw_.getPipeNumber(this.pw_.getNumberOfPipes()-1).x) + 250, Math.floor(Math.random()*-260) );
+      this.pw_.createNewPipe( (this.pw_.getPipeNumber(this.pw_.getNumberOfPipes()-1)).position.x + 250 , Math.floor(Math.random()*-260) );
     }
   }
   
@@ -271,8 +271,8 @@ class Controller {
       
       // ******** BUG TESTING ********
       document.getElementById("input").value = this.w_.bird.position.x;
-      document.getElementById("firstPipe").value = this.w_.pipeWorld.getPipeNumber(0).position.x;
-      document.getElementById("lastPipe").value = this.w_.pipeWorld.getPipeNumber(this.w_.pipeWorld.getNumberOfPipes()-1).position.x;
+      //document.getElementById("firstPipe").value = this.w_.pipeWorld.getPipeNumber(0).position.x;
+      //document.getElementById("lastPipe").value = this.w_.pipeWorld.getPipeNumber(this.w_.pipeWorld.getNumberOfPipes()-1).position.x;
       // ********
       
       requestAnimationFrame(this.runGame);
@@ -289,9 +289,3 @@ let distance = (v, t) => v * t;
 
 let c = new Controller();
 c.start();
-
-
-
-
-
-
