@@ -1,5 +1,5 @@
-
 // https://repl.it/@fajitafaria/flappybirdwithcollision
+
 
 /** Class representing a point with 2 coordinates. */
 class Point {
@@ -259,7 +259,7 @@ class WorldView {
     this.gameContext.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);  
     
     // DRAW SKY
-    this.gameContext.drawImage(this.skyBackgroundImage, -(this.bird_.position.x)% (this.skyBackgroundImage.width-this.canvasElement.width), 0, this.skyBackgroundImage.width, this.skyBackgroundImage.height);
+    this.gameContext.drawImage(this.skyBackgroundImage, -(this.bird_.position.x)% (this.skyBackgroundImage.width-this.canvasElement.width ), 0, this.skyBackgroundImage.width, this.skyBackgroundImage.height);
     
     // DRAW TOP AND BOTTOM PIPES
     this.pwv_.render(this.gameContext, this.bird_.position.x);
@@ -319,6 +319,7 @@ class Controller {
   constructor(){
     this.w_ = new World();
     this.wv_ = new WorldView(this.w_);
+    this.loseScreen = new LoseView(this.m);
   }
   
   start() {
@@ -327,10 +328,10 @@ class Controller {
     this.runGame = ms => {
       // CHECK FOR: COLLISION, IF FIRST PIPE IS OFF SCREEN
       if (this.w_.checkForCollision()) {
-        console.log("COLLIDE");
+        console.log("COLLIDE"); this.loseScreen.render();
       }
       else{
-      this.w_.checkIfFirstPipeIsOffScreen();
+      this.w_.checkIfFirstPipeIsOffScreen(); this.loseScreen.render();
       
       // BIRD MOVES
       this.w_.bird.move(msToSec(ms - this.lastTimeBirdMove));
@@ -356,6 +357,25 @@ class Controller {
 }
 /*********************************************************************/
 
+class LoseView {
+  constructor(bird) {
+    this.playAgainBtn = document.getElementById("play-again-btn");
+    this.m = bird;
+    this.canvasElement = document.getElementById("game");
+    this.loseContext = this.canvasElement.getContext("2d");
+    this.loseContext.font = "20px verdana";
+  }
+  
+  
+  render() {
+      this.loseContext.fillStyle = 'white';
+      this.loseContext.fillText("You Lose!", this.canvasElement.width/2-34, this.canvasElement.height/2-50);
+      this.playAgainBtn.style.display = 'block';
+      this.playAgainBtn.addEventListener("click", function(){
+        location.reload(true);});
+  }
+}
+
 let msToSec = milliseconds => milliseconds/1000;
 let distance = (v, t) => v * t; 
 
@@ -373,10 +393,16 @@ c.start();
   </head>
   <body>
     <canvas width = "320" height = "480" id = "game"></canvas>
+    <button id="play-again-btn">Play Again</button>
+    <br>
     <script src = "cloud-background.js"></script>
     <script src = "index.js"></script>
+    <p>Input</p>
     <input id="input">
+    <p>Last Pipe</p>
     <input id="lastPipe">
+    <p>First Pipe</p>
     <input id="firstPipe">
   </body>
 </html>
+*/
